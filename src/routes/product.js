@@ -1,31 +1,28 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getProducts } from '../graphQuery';
+import { getProduct } from '../graphQuery';
 import { useLoaderData } from 'react-router-dom';
 import ProductBox from '../components/ProductBox';
 
 export async function loader({ params }) {
-    const products = await getProducts({params});
-    return { products };
+    const product = await getProduct({params});
+    return { product };
 }
 
-function Products() {
-  const { products } = useLoaderData();
-
+function Product() {
+  const { product } = useLoaderData();
+  console.log(product)
   return (
-      <div className="d-flex flex-wrap">
-        {products.map((product)=> {
-            return <ProductBox 
-                key={product.id} 
-                productName={product.name} 
-                productPrice={product.price} 
-                productImg={product.img}
-                productHandle={product.handle}
-                
-                />
-          })
-        } 
-      </div>
+    <div className="d-flex flex-wrap">
+        <div className="col-md-6">
+            <img src={product.img} className="img-fluid"/>
+        </div>
+        <div className="col-md-6">
+            <span className="d-block fw-bold">{product.name}</span>
+            <span className="d-block">${product.price}</span>
+            <span className="d-block">{product.description}</span>
+        </div>
+    </div>
   );
 }
 
-export default Products;
+export default Product;

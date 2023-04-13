@@ -2,15 +2,15 @@ import { gql } from '@apollo/client';
 import client from './graphClient';
 
 const GET_PRODUCTS = gql`
-  query GetProducts {
-    products {
-      id
-      name
-      price
-      handle
-      img
+    query GetProducts {
+        products {
+            id
+            name
+            price
+            handle
+            img
+        }
     }
-  }
 `;
 
 export const getProducts = async ({params, request}) => {
@@ -22,8 +22,8 @@ export const getProducts = async ({params, request}) => {
 }
 
 const GET_PRODUCT = gql`
-    query Product($id:ID!){
-        product(id:$id){
+    query Product($handle:String!){
+        product(handle:$handle){
             name
             price
             description
@@ -33,8 +33,10 @@ const GET_PRODUCT = gql`
 `;
 export const getProduct = async ({params, request}) => {
     const { data } = await client.query({
-        query:GET_PRODUCTS,
-        variables: {}
+        query:GET_PRODUCT,
+        variables: {
+            handle: params.handle
+        }
     })
-    return data.products
+    return data.product
 }
