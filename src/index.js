@@ -9,7 +9,8 @@ import {
 } from 'react-router-dom';
 import Root from "./routes/root";
 import ErrorPage from './error-page';
-import Products from './routes/products'
+import Products, { loader as productsLoader,
+} from './routes/products'
 import Product, { loader as productLoader,
 } from './routes/product'
 
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+        loader: productsLoader
       },
       {
         path: "/product/:handle",

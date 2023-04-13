@@ -1,28 +1,19 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useQuery, gql } from '@apollo/client';
+import { getProducts } from '../graphQuery';
+import { useLoaderData } from 'react-router-dom';
 import ProductBox from '../components/ProductBox';
 
-const GET_PRODUCTS = gql`
-  query GetProducts {
-    products {
-      id
-      name
-      price
-      handle
-      img
-    }
-  }
-`;
-
+export async function loader({ params }) {
+    const products = await getProducts({params});
+    return { products };
+}
 
 function Products() {
-  const { loading, error, data } = useQuery(GET_PRODUCTS);
+  const { products } = useLoaderData();
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
   return (
       <div className="d-flex flex-wrap">
-        {data.products.map((product)=> {
+        {products.map((product)=> {
             return <ProductBox 
                 key={product.id} 
                 productName={product.name} 
@@ -32,7 +23,7 @@ function Products() {
                 
                 />
           })
-        }
+        } 
       </div>
   );
 }

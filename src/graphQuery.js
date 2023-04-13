@@ -14,12 +14,27 @@ const GET_PRODUCTS = gql`
 `;
 
 export const getProducts = async ({params, request}) => {
-    console.log(params.handle);
     const { data } = await client.query({
         query:GET_PRODUCTS,
         variables: {}
     })
-    console.log(data)
     return data.products
 }
 
+const GET_PRODUCT = gql`
+    query Product($id:ID!){
+        product(id:$id){
+            name
+            price
+            description
+            img
+        }
+    }
+`;
+export const getProduct = async ({params, request}) => {
+    const { data } = await client.query({
+        query:GET_PRODUCTS,
+        variables: {}
+    })
+    return data.products
+}
