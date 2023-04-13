@@ -1,7 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
+import { useQuery, gql } from '@apollo/client';
 
+const GET_PRODUCTS = gql`
+  query GetProducts {
+    products {
+      id
+    }
+  }
+`;
 function App() {
+  const { loading, error, data } = useQuery(GET_PRODUCTS);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
   return (
     <div className="App">
       <header className="App-header">
