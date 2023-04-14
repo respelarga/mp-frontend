@@ -40,3 +40,19 @@ export const getProduct = async ({params, request}) => {
     })
     return data.product
 }
+
+const GET_CART = gql`
+    query{
+        cart{
+            products
+        }
+    }
+`;
+
+export const getCart = async () => {
+    const { data } = await client.query({
+        query:GET_CART,
+        variables: {}
+    })
+    return data
+}

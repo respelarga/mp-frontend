@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getProduct } from '../graphQuery';
 import { useLoaderData } from 'react-router-dom';
-import ProductBox from '../components/ProductBox';
+import ProductBox from '../components/productBox';
 
 export async function loader({ params }) {
     const product = await getProduct({params});

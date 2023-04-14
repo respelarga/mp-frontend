@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getProducts } from '../graphQuery';
 import { useLoaderData } from 'react-router-dom';
-import ProductBox from '../components/ProductBox';
+import ProductBox from '../components/productBox';
 
 export async function loader({ params }) {
     const products = await getProducts({params});
@@ -15,7 +15,8 @@ function Products() {
       <div className="d-flex flex-wrap">
         {products.map((product)=> {
             return <ProductBox 
-                key={product.id} 
+                key={product.id}
+                productId={product.id}
                 productName={product.name} 
                 productPrice={product.price} 
                 productImg={product.img}
