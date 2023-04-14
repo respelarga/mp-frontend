@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getProduct } from '../graphQuery';
 import { useLoaderData } from 'react-router-dom';
-import ProductBox from '../components/productBox';
 
 export async function loader({ params }) {
     const product = await getProduct({params});
@@ -10,7 +9,6 @@ export async function loader({ params }) {
 
 function Product() {
   const { product } = useLoaderData();
-  console.log(product)
   return (
     <div className="d-flex flex-wrap">
         <div className="col-md-6">

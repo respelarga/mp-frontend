@@ -1,7 +1,4 @@
-import { 
-    Outlet, 
-    useLoaderData 
-} from "react-router-dom";
+import { Outlet, useRouteLoaderData} from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import React, { useState } from 'react';
@@ -16,7 +13,7 @@ export async function loader({ params }) {
 
 
 function Root() {
-  const { cart } = useLoaderData();
+  const cart = useRouteLoaderData('root');
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

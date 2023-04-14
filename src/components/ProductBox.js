@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { gql, useMutation} from '@apollo/client';
 import Button from 'react-bootstrap/Button';
+import { Form } from "react-router-dom";
+
 
 const ADD_TO_CART = gql`
     mutation AddToCart($products:String!){
@@ -13,6 +15,7 @@ const ADD_TO_CART = gql`
 
 function ProductBox(props) {
   const [addToCart, { data, loading, error }] = useMutation(ADD_TO_CART);
+  const cart = props.cart
   return (
     <div className="col-md-3">
         <Link to={`/product/${props.productHandle}`}>
@@ -21,9 +24,13 @@ function ProductBox(props) {
             <span className="d-block text-center">${props.productPrice}</span>
         </Link>
         <div className="d-block text-center mt-3">
-            <Button variant="primary" onClick={() => {
-                    addToCart({ variables: { products: `[${props.productId}]:1` } })
-            }}>Add to Cart</Button>{' '}
+            <Form>
+                <Button variant="primary" onClick={() => {
+                        cart[props.productId] = '1'
+                        addToCart({ variables: { products: JSON.stringify(cart) } })
+                }}>Add to Cart</Button>{' '}
+            </Form>
+            
         </div>
         
     </div>

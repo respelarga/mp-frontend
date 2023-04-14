@@ -54,5 +54,10 @@ export const getCart = async () => {
         query:GET_CART,
         variables: {}
     })
-    return data
+    
+    if(data.cart != null){
+        return JSON.parse(data.cart.products)
+       } else {
+        return data
+    }
 }

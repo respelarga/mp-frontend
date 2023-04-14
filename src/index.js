@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider, gql } from '@apollo/client';
 import client from './graphClient'
 import {
   createBrowserRouter,
@@ -14,6 +14,21 @@ import Products, { loader as productsLoader,
 import Product, { loader as productLoader,
 } from './routes/product'
 
+const GET_CART = gql`
+    query{
+        cart{
+            products
+        }
+    }
+`;
+
+export const getCart = async () => {
+    const { data } = await client.query({
+        query:GET_CART,
+        variables: {}
+    })
+    return data
+}
 
 
 const router = createBrowserRouter([
@@ -22,6 +37,8 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: <ErrorPage />,
     loader: rootLoader,
+    action: getCart,
+    id: 'root',
     children: [
       {
         path: "/products",
@@ -36,6 +53,7 @@ const router = createBrowserRouter([
     ],
   }
 ]);
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

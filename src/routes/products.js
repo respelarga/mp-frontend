@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getProducts } from '../graphQuery';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData,useRouteLoaderData } from 'react-router-dom';
 import ProductBox from '../components/productBox';
 
 export async function loader({ params }) {
@@ -10,7 +10,7 @@ export async function loader({ params }) {
 
 function Products() {
   const { products } = useLoaderData();
-
+  const cart = useRouteLoaderData('root');
   return (
       <div className="d-flex flex-wrap">
         {products.map((product)=> {
@@ -21,6 +21,7 @@ function Products() {
                 productPrice={product.price} 
                 productImg={product.img}
                 productHandle={product.handle}
+                cart={cart}
                 
                 />
           })

@@ -10,7 +10,7 @@ function cartModal(props) {
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        { props.cart != null ? <span>{props.cart.products}</span> : 'Cart empty'}
+        { props.cart != null ? <span>{JSON.stringify(props.cart)}</span> : 'Cart empty'}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={props.handleClose}>
