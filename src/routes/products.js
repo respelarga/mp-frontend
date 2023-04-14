@@ -12,7 +12,7 @@ function Products() {
   const { products } = useLoaderData();
   const cart = useRouteLoaderData('root');
   return (
-      <div className="d-flex flex-wrap">
+      <div className="row">
         {products.map((product)=> {
             return <ProductBox 
                 key={product.id}

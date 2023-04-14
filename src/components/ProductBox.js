@@ -15,7 +15,6 @@ const ADD_TO_CART = gql`
 
 function ProductBox(props) {
   const [addToCart, { data, loading, error }] = useMutation(ADD_TO_CART);
-  const cart = props.cart
   return (
     <div className="col-md-3">
         <Link to={`/product/${props.productHandle}`}>
@@ -26,8 +25,8 @@ function ProductBox(props) {
         <div className="d-block text-center mt-3">
             <Form>
                 <Button variant="primary" onClick={() => {
-                        cart[props.productId] = '1'
-                        addToCart({ variables: { products: JSON.stringify(cart) } })
+                        props.cart[props.productId] = '1'
+                        addToCart({ variables: { products: JSON.stringify(props.cart) } })
                 }}>Add to Cart</Button>{' '}
             </Form>
             

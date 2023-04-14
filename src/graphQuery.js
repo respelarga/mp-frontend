@@ -61,3 +61,31 @@ export const getCart = async () => {
         return data
     }
 }
+
+const GET_PRODUCT_BY_ID = gql`
+    query Product($id:ID!){
+        productById(id:$id){
+            id
+            name
+            price
+            img
+            handle
+        }
+    }
+`;
+
+
+export const getProductById = async (id) => {
+    const { data } = await client.query({
+        query:GET_PRODUCT_BY_ID,
+        variables: {
+            id
+        }
+    })
+    
+    if(data.cart != null){
+        return JSON.parse(data.cart.products)
+    } else {
+        return data
+    }
+}
