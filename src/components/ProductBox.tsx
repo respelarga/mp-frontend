@@ -39,7 +39,7 @@ function ProductBox(props: Product): JSX.Element {
           ) : (
             <>Add to Cart</>
           )}
-        </Button>{" "}
+        </Button>
       </div>
     </Col>
   );

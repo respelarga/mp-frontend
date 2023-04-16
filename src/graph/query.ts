@@ -23,6 +23,7 @@ export const getProducts: Function = async (): Promise<Product[] | null> => {
 const GET_PRODUCT: DocumentNode = gql`
   query Product($handle: String!) {
     product(handle: $handle) {
+      id
       name
       price
       description
