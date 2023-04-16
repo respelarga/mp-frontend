@@ -1,41 +1,33 @@
-import { useRouteLoaderData } from "react-router-dom";
-import { getDiscounts } from "../graphQuery";
-import { useLoaderData } from "react-router-dom";
-import { Link } from "react-router-dom";
-import Button from "react-bootstrap/Button";
-import { getProductById } from "../graphQuery";
 import { useState, useEffect } from "react";
-import { gql, useMutation } from "@apollo/client";
+import { useRouteLoaderData, useLoaderData, Link } from "react-router-dom";
 
-export async function loader({ params }) {
-  const discounts = await getDiscounts({ params });
+import Button from "react-bootstrap/Button";
+
+import { useMutation } from "@apollo/client";
+import { getProductById, getDiscounts } from "../graph/query";
+import { REMOVE_FROM_CART } from "../graph/mutation";
+
+export async function loader(): Promise<Discount[]> {
+  const discounts = await getDiscounts();
   return discounts;
 }
 
-const REMOVE_FROM_CART = gql`
-  mutation AddToCart($products: String!) {
-    addToCart(products: $products) {
-      products
-    }
-  }
-`;
-
-function Checkout() {
-  const cart = useRouteLoaderData("root");
-  const discounts = useLoaderData();
+function Checkout(): JSX.Element {
+  const cart = useRouteLoaderData("root") as Cart;
+  const discounts = useLoaderData() as Discount[];
   const [removeFromCart, { data, loading, error }] =
     useMutation(REMOVE_FROM_CART);
-  const [cartData, setCartData] = useState([]);
-  const [cartState, setCartState] = useState("");
+  const [cartProducts, setCartProducts] = useState<Product[]>([]);
+  const [cartState, setCartState] = useState<CartState>("loading");
   let subTotal = 0;
 
   useEffect(() => {
     setCartState("loading");
-    setCartData([]);
+    setCartProducts([]);
     if (Object.keys(cart).length > 0) {
       Object.keys(cart).map(async (id, i, arr) => {
         let data = await getProductById(id);
-        setCartData((cartData) => [...cartData, data]);
+        setCartProducts((cartProducts) => [...cartProducts, data]);
         if (arr.length - 1 === i) {
           setCartState("success");
         }
@@ -49,30 +41,30 @@ function Checkout() {
     <>
       {cartState === "loading" ? (
         <h1>Loading...</h1>
-      ) : cartData.length === 0 ? (
+      ) : cartProducts.length === 0 ? (
         <span className="">Cart is Empty!</span>
       ) : (
-        cartData.map((data, i, arr) => {
-          subTotal += parseFloat(data.productById.price);
+        cartProducts.map((data: Product, i, arr) => {
+          subTotal += data.price;
           return (
             <>
               <div className="row mb-3">
                 <div className="col-md-3">
-                  <Link to={`/product/${data.productById.handle}`}>
-                    <img src={data.productById.img} className="img-fluid" />
+                  <Link to={`/product/${data.handle}`}>
+                    <img src={data.img} className="img-fluid" />
                   </Link>
                 </div>
                 <div className="col-md-7">
-                  <Link to={`/product/${data.productById.handle}`}>
-                    <span className="d-block">{data.productById.name}</span>
+                  <Link to={`/product/${data.handle}`}>
+                    <span className="d-block">{data.name}</span>
                   </Link>
-                  <span className="d-block">${data.productById.price}</span>
+                  <span className="d-block">${data.price}</span>
                 </div>
                 <div className="col-md-2">
                   <Button
                     variant="danger"
                     onClick={() => {
-                      delete cart[data.productById.id];
+                      delete cart[data.id];
                       removeFromCart({
                         variables: { products: JSON.stringify(cart) },
                       });
@@ -84,8 +76,8 @@ function Checkout() {
               </div>
               {arr.length - 1 === i ? (
                 <>
-                  <div className="row border-top">
-                    <div class="col-md-12 mt-3 text-right">
+                  {/* <div className="row border-top">
+                    <div className="col-md-12 mt-3 text-right">
                       {console.log(
                         discounts
                           .filter((discount) => {
@@ -99,7 +91,7 @@ function Checkout() {
                       )}
                       Subtotal: {subTotal}
                     </div>
-                  </div>
+                  </div> */}
                 </>
               ) : null}
             </>

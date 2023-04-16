@@ -1,17 +1,21 @@
+import { useState } from "react";
 import { Outlet, useRouteLoaderData } from "react-router-dom";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
-import { getCart } from "../graphQuery";
-import CartModal from "../components/cartModal";
 
-export async function loader({ params }) {
+import { getCart } from "../graph/query";
+
+import CartModal from "../components/CartModal";
+
+export async function loader(): Promise<Cart> {
   const cart = await getCart();
   return cart;
 }
 
-function Root() {
+function Root(): JSX.Element {
   const cart = useRouteLoaderData("root");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -30,7 +34,7 @@ function Root() {
       <Container>
         <Outlet />
       </Container>
-      <CartModal show={show} handleClose={handleClose} cart={cart} />
+      <CartModal show={show} handleClose={handleClose} cart={cart as Cart} />
     </>
   );
 }

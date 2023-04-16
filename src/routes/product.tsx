@@ -1,14 +1,18 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import { getProduct } from "../graphQuery";
 import { useLoaderData } from "react-router-dom";
 
-export async function loader({ params }) {
-  const product = await getProduct({ params });
-  return { product };
+import { getProduct } from "../graph/query";
+
+export async function loader({
+  params,
+}: {
+  params: LoaderParams;
+}): Promise<Product> {
+  const product = await getProduct(params);
+  return product;
 }
 
-function Product() {
-  const { product } = useLoaderData();
+function Product(): JSX.Element {
+  const product = useLoaderData() as Product;
   return (
     <div className="d-flex flex-wrap">
       <div className="col-md-6">

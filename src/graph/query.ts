@@ -1,7 +1,7 @@
-import { gql } from "@apollo/client";
-import client from "./graphClient";
+import { DocumentNode, gql } from "@apollo/client";
+import client from "./client";
 
-const GET_PRODUCTS = gql`
+const GET_PRODUCTS: DocumentNode = gql`
   query GetProducts {
     products {
       id
@@ -13,15 +13,14 @@ const GET_PRODUCTS = gql`
   }
 `;
 
-export const getProducts = async ({ params, request }) => {
+export const getProducts: Function = async (): Promise<Product[] | null> => {
   const { data } = await client.query({
     query: GET_PRODUCTS,
-    variables: {},
   });
   return data.products;
 };
 
-const GET_PRODUCT = gql`
+const GET_PRODUCT: DocumentNode = gql`
   query Product($handle: String!) {
     product(handle: $handle) {
       name
@@ -31,7 +30,10 @@ const GET_PRODUCT = gql`
     }
   }
 `;
-export const getProduct = async ({ params, request }) => {
+
+export const getProduct: Function = async (
+  params: LoaderParams
+): Promise<Product | null> => {
   const { data } = await client.query({
     query: GET_PRODUCT,
     variables: {
@@ -41,7 +43,7 @@ export const getProduct = async ({ params, request }) => {
   return data.product;
 };
 
-const GET_CART = gql`
+const GET_CART: DocumentNode = gql`
   query {
     cart {
       products
@@ -49,20 +51,15 @@ const GET_CART = gql`
   }
 `;
 
-export const getCart = async () => {
+export const getCart: Function = async (): Promise<Product[] | null> => {
   const { data } = await client.query({
     query: GET_CART,
-    variables: {},
   });
 
-  if (data.cart != null) {
-    return JSON.parse(data.cart.products);
-  } else {
-    return data;
-  }
+  return JSON.parse(data.cart.products);
 };
 
-const GET_PRODUCT_BY_ID = gql`
+const GET_PRODUCT_BY_ID: DocumentNode = gql`
   query Product($id: ID!) {
     productById(id: $id) {
       id
@@ -74,7 +71,9 @@ const GET_PRODUCT_BY_ID = gql`
   }
 `;
 
-export const getProductById = async (id) => {
+export const getProductById: Function = async (
+  id: String
+): Promise<Product | null> => {
   const { data } = await client.query({
     query: GET_PRODUCT_BY_ID,
     variables: {
@@ -82,14 +81,10 @@ export const getProductById = async (id) => {
     },
   });
 
-  if (data.cart != null) {
-    return JSON.parse(data.cart.products);
-  } else {
-    return data;
-  }
+  return data.productById;
 };
 
-const GET_DISCOUNTS = gql`
+const GET_DISCOUNTS: DocumentNode = gql`
   query {
     discount {
       percentage
@@ -98,10 +93,9 @@ const GET_DISCOUNTS = gql`
   }
 `;
 
-export const getDiscounts = async () => {
+export const getDiscounts: Function = async (): Promise<Product[] | null> => {
   const { data } = await client.query({
     query: GET_DISCOUNTS,
-    variables: {},
   });
   return data.discount;
 };
