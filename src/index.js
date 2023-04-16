@@ -8,22 +8,7 @@ import Root, { loader as rootLoader } from "./routes/root";
 import ErrorPage from "./error-page";
 import Products, { loader as productsLoader } from "./routes/products";
 import Product, { loader as productLoader } from "./routes/product";
-
-const GET_CART = gql`
-  query {
-    cart {
-      products
-    }
-  }
-`;
-
-export const getCart = async () => {
-  const { data } = await client.query({
-    query: GET_CART,
-    variables: {},
-  });
-  return data;
-};
+import Checkout, { loader as checkoutLoader } from "./routes/checkout";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +16,6 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: <ErrorPage />,
     loader: rootLoader,
-    action: getCart,
     id: "root",
     children: [
       {
@@ -43,6 +27,11 @@ const router = createBrowserRouter([
         path: "/product/:handle",
         element: <Product />,
         loader: productLoader,
+      },
+      {
+        path: "/checkout",
+        element: <Checkout />,
+        loader: checkoutLoader,
       },
     ],
   },

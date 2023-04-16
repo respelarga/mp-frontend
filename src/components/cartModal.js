@@ -4,7 +4,6 @@ import Modal from "react-bootstrap/Modal";
 import { getProductById } from "../graphQuery";
 import { useState, useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { useRouteLoaderData } from "react-router-dom";
 
 const REMOVE_FROM_CART = gql`
   mutation AddToCart($products: String!) {
@@ -88,12 +87,11 @@ function CartModal(props) {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={props.handleClose}>
-          Save Changes
-        </Button>
+        <Link to={"/checkout"}>
+          <Button variant="primary" onClick={props.handleClose}>
+            Checkout
+          </Button>
+        </Link>
       </Modal.Footer>
     </Modal>
   );

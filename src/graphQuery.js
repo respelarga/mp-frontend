@@ -88,3 +88,20 @@ export const getProductById = async (id) => {
     return data;
   }
 };
+
+const GET_DISCOUNTS = gql`
+  query {
+    discount {
+      percentage
+      minimum
+    }
+  }
+`;
+
+export const getDiscounts = async () => {
+  const { data } = await client.query({
+    query: GET_DISCOUNTS,
+    variables: {},
+  });
+  return data.discount;
+};
