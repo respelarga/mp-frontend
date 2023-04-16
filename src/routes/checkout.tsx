@@ -42,7 +42,9 @@ function Checkout(): JSX.Element {
       {cartState === "loading" ? (
         <h1>Loading...</h1>
       ) : cartProducts.length === 0 ? (
-        <span className="">Cart is Empty!</span>
+        <span className="">
+          Cart is Empty! <Link to="/">Continue Shopping</Link>
+        </span>
       ) : (
         cartProducts.map((product: Product, i, arr): JSX.Element => {
           subTotal += product.price;
@@ -55,7 +57,10 @@ function Checkout(): JSX.Element {
                   </Link>
                 </div>
                 <div className="col-md-7">
-                  <Link to={`/product/${product.handle}`}>
+                  <Link
+                    className="text-decoration-none text-black fw-bold"
+                    to={`/product/${product.handle}`}
+                  >
                     <span className="d-block">{product.name}</span>
                   </Link>
                   <span className="d-block">${product.price}</span>
@@ -64,7 +69,7 @@ function Checkout(): JSX.Element {
                   <Button
                     variant="danger"
                     onClick={() => {
-                      delete cart[data.id];
+                      delete cart[product.id];
                       removeFromCart({
                         variables: { products: JSON.stringify(cart) },
                       });
@@ -74,32 +79,52 @@ function Checkout(): JSX.Element {
                   </Button>
                 </div>
               </div>
-              {arr.length - 1 === i ? (
-                <>
-                  {/* <div className="row border-top">
-                    <div className="col-md-12 mt-3 text-right">
-                      {console.log(
-                        discounts
-                          .filter((discount) => {
-                            return discount.minimum <= subTotal;
-                          })
-                          .reduce((prev, current) => {
-                            return prev.minimum > current.minimum
-                              ? prev
-                              : current;
-                          })
-                      )}
-                      Subtotal: {subTotal}
-                    </div>
-                  </div> */}
-                </>
-              ) : null}
             </>
           );
         })
       )}
+      {cartProducts.length > 0 ? (
+        <>
+          <div className="row">
+            <div className="col-md-12 pt-3 mb-3 text-right border-top">
+              <span className="d-block">Subtotal: ${subTotal}</span>
+            </div>
+            <div className="col-md-12 pt-3 text-right border-top">
+              {calculateDiscount(discounts, subTotal)}
+            </div>
+          </div>
+        </>
+      ) : null}
     </>
   );
 }
 
 export default Checkout;
+
+function calculateDiscount(
+  discounts: Discount[],
+  subTotal: number
+): JSX.Element {
+  let discountApplied: Discount;
+  const discountElgible = discounts.filter((discount: Discount) => {
+    return discount.minimum <= subTotal;
+  });
+  if (discountElgible.length > 0) {
+    discountApplied = discountElgible.reduce((prev, current) => {
+      return prev.minimum > current.minimum ? prev : current;
+    });
+    const total: number =
+      subTotal - (discountApplied.percentage / 100) * subTotal;
+    return (
+      <>
+        <span className="d-block mb-3 fw-bold">
+          Discount appilied {discountApplied.percentage}% off on total greater
+          than ${discountApplied.minimum}
+        </span>
+        <span className="d-block fw-bold">Total: ${total.toFixed(2)}</span>
+      </>
+    );
+  } else {
+    return <span className="d-block fw-bold">Total: ${subTotal}</span>;
+  }
+}
