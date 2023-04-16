@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useRouteLoaderData, useLoaderData, Link } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import { useMutation } from "@apollo/client";
 import { getProductById, getDiscounts } from "../graph/query";
@@ -50,13 +52,13 @@ function Checkout(): JSX.Element {
           subTotal += product.price;
           return (
             <>
-              <div className="row mb-3">
-                <div className="col-md-3">
+              <Row className="mb-3">
+                <Col md={3}>
                   <Link to={`/product/${product.handle}`}>
                     <img src={product.img} className="img-fluid" />
                   </Link>
-                </div>
-                <div className="col-md-7">
+                </Col>
+                <Col md={7}>
                   <Link
                     className="text-decoration-none text-black fw-bold"
                     to={`/product/${product.handle}`}
@@ -64,8 +66,8 @@ function Checkout(): JSX.Element {
                     <span className="d-block">{product.name}</span>
                   </Link>
                   <span className="d-block">${product.price}</span>
-                </div>
-                <div className="col-md-2">
+                </Col>
+                <Col md={2}>
                   <Button
                     variant="danger"
                     onClick={() => {
@@ -77,22 +79,22 @@ function Checkout(): JSX.Element {
                   >
                     x
                   </Button>
-                </div>
-              </div>
+                </Col>
+              </Row>
             </>
           );
         })
       )}
       {cartProducts.length > 0 ? (
         <>
-          <div className="row">
-            <div className="col-md-12 pt-3 mb-3 text-right border-top">
+          <Row>
+            <Col className="pt-3 mb-3 text-right border-top" md={12}>
               <span className="d-block">Subtotal: ${subTotal}</span>
-            </div>
-            <div className="col-md-12 pt-3 text-right border-top">
+            </Col>
+            <Col className="pt-3 mb-3 text-right border-top" md={12}>
               {calculateDiscount(discounts, subTotal)}
-            </div>
-          </div>
+            </Col>
+          </Row>
         </>
       ) : null}
     </>
