@@ -49,7 +49,7 @@ function Checkout(): JSX.Element {
         </span>
       ) : (
         cartProducts.map((product: Product, i, arr): JSX.Element => {
-          subTotal += product.price;
+          subTotal += parseFloat(product.price);
           return (
             <>
               <Row className="mb-3">

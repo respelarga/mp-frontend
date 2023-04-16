@@ -9,6 +9,7 @@ import Root, { loader as rootLoader } from "./routes/root";
 import Products, { loader as productsLoader } from "./routes/products";
 import Product, { loader as productLoader } from "./routes/product";
 import Checkout, { loader as checkoutLoader } from "./routes/checkout";
+import UploadProduct from "./routes/upload";
 import ErrorPage from "./error-page";
 
 const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
         path: "/checkout",
         element: <Checkout />,
         loader: checkoutLoader,
+      },
+      {
+        path: "/upload",
+        element: <UploadProduct />,
       },
     ],
   },

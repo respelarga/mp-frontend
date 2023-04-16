@@ -29,7 +29,6 @@ type Product = {
   id: keyof Cart;
   img: string;
   name: string;
-  price: number;
+  price: string;
+  uuid?: number;
 };
-
-type showCart = boolean;

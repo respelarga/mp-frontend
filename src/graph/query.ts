@@ -103,3 +103,9 @@ export const getDiscounts: Function = async (): Promise<Product[] | null> => {
   });
   return data.discount;
 };
+
+export const IS_LOGGED_IN: DocumentNode = gql`
+  query {
+    isLoggedIn
+  }
+`;
