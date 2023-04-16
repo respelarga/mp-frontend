@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useRouteLoaderData, Link } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -9,6 +9,8 @@ import { getProductById } from "../graph/query";
 import { REMOVE_FROM_CART } from "../graph/mutation";
 
 function CartModal(props: CartModalProps): JSX.Element {
+  const cart = useRouteLoaderData("root") as Cart;
+
   const [removeFromCart, { data, loading, error }] =
     useMutation(REMOVE_FROM_CART);
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
@@ -17,8 +19,8 @@ function CartModal(props: CartModalProps): JSX.Element {
   useEffect(() => {
     setCartState("loading");
     setCartProducts([]);
-    if (Object.keys(props.cart).length > 0) {
-      Object.keys(props.cart).map(async (id, i, arr) => {
+    if (Object.keys(cart).length > 0) {
+      Object.keys(cart).map(async (id, i, arr) => {
         let data = await getProductById(id);
         setCartProducts((cartProducts) => [...cartProducts, data]);
         if (arr.length - 1 === i) {
@@ -28,7 +30,7 @@ function CartModal(props: CartModalProps): JSX.Element {
     } else {
       setCartState("success");
     }
-  }, [JSON.stringify(props.cart)]);
+  }, [JSON.stringify(cart)]);
 
   return (
     <Modal show={props.show} onHide={props.handleClose}>
@@ -42,7 +44,7 @@ function CartModal(props: CartModalProps): JSX.Element {
           ) : cartProducts.length === 0 ? (
             <span className="">Cart is Empty!</span>
           ) : (
-            cartProducts.map((product: Product): {} => {
+            cartProducts.map((product: Product): JSX.Element => {
               return (
                 <>
                   <div className="row mb-3">
@@ -67,9 +69,9 @@ function CartModal(props: CartModalProps): JSX.Element {
                       <Button
                         variant="danger"
                         onClick={() => {
-                          delete props.cart[product.id];
+                          delete cart[product.id];
                           removeFromCart({
-                            variables: { products: JSON.stringify(props.cart) },
+                            variables: { products: JSON.stringify(cart) },
                           });
                         }}
                       >

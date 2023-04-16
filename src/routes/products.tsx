@@ -1,5 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 
+import Row from "react-bootstrap/Row";
+
 import { getProducts } from "../graph/query";
 
 import ProductBox from "../components/ProductBox";
@@ -12,8 +14,8 @@ export async function loader(): Promise<Product[]> {
 function Products(): JSX.Element {
   const products = useLoaderData() as Product[];
   return (
-    <div className="row">
-      {products.map((product: Product) => {
+    <Row>
+      {products.map((product: Product): JSX.Element => {
         return (
           <ProductBox
             key={product.id}
@@ -25,7 +27,7 @@ function Products(): JSX.Element {
           />
         );
       })}
-    </div>
+    </Row>
   );
 }
 

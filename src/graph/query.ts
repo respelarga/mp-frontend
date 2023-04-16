@@ -51,12 +51,15 @@ const GET_CART: DocumentNode = gql`
   }
 `;
 
-export const getCart: Function = async (): Promise<Product[] | null> => {
+export const getCart: Function = async (): Promise<Cart> => {
   const { data } = await client.query({
     query: GET_CART,
   });
-
-  return JSON.parse(data.cart.products);
+  if (data.cart !== null) {
+    return JSON.parse(data.cart.products);
+  } else {
+    return {};
+  }
 };
 
 const GET_PRODUCT_BY_ID: DocumentNode = gql`

@@ -1,6 +1,7 @@
 import { Link, useRouteLoaderData } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
 
 import { useMutation } from "@apollo/client";
 import { ADD_TO_CART } from "../graph/mutation";
@@ -10,7 +11,7 @@ function ProductBox(props: Product): JSX.Element {
   const cart = useRouteLoaderData("root") as Cart;
 
   return (
-    <div className="col-md-3">
+    <Col md={3}>
       <Link to={`/product/${props.handle}`}>
         <img src={props.img} className="img-fluid p-3" />
         <span className="d-block text-center fw-bold">{props.name}</span>
@@ -20,7 +21,7 @@ function ProductBox(props: Product): JSX.Element {
         <Button
           variant="primary"
           onClick={() => {
-            cart[props.id] = "1";
+            cart[props.id] = 1;
             addToCart({
               variables: { products: JSON.stringify(cart) },
             });
@@ -29,7 +30,7 @@ function ProductBox(props: Product): JSX.Element {
           Add to Cart
         </Button>{" "}
       </div>
-    </div>
+    </Col>
   );
 }
 

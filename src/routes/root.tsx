@@ -33,10 +33,10 @@ function Root(): JSX.Element {
           </Button>
         </Container>
       </Navbar>
-      <Container>
+      <Container className="my-5">
         <Outlet />
       </Container>
-      <CartModal show={show} handleClose={handleClose} cart={cart as Cart} />
+      <CartModal show={show} handleClose={handleClose} />
     </>
   );
 }

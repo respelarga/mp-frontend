@@ -44,21 +44,21 @@ function Checkout(): JSX.Element {
       ) : cartProducts.length === 0 ? (
         <span className="">Cart is Empty!</span>
       ) : (
-        cartProducts.map((data: Product, i, arr) => {
-          subTotal += data.price;
+        cartProducts.map((product: Product, i, arr): JSX.Element => {
+          subTotal += product.price;
           return (
             <>
               <div className="row mb-3">
                 <div className="col-md-3">
-                  <Link to={`/product/${data.handle}`}>
-                    <img src={data.img} className="img-fluid" />
+                  <Link to={`/product/${product.handle}`}>
+                    <img src={product.img} className="img-fluid" />
                   </Link>
                 </div>
                 <div className="col-md-7">
-                  <Link to={`/product/${data.handle}`}>
-                    <span className="d-block">{data.name}</span>
+                  <Link to={`/product/${product.handle}`}>
+                    <span className="d-block">{product.name}</span>
                   </Link>
-                  <span className="d-block">${data.price}</span>
+                  <span className="d-block">${product.price}</span>
                 </div>
                 <div className="col-md-2">
                   <Button

@@ -1,9 +1,8 @@
 type Cart = {
-  [key: number]: string;
+  [key: string]: number;
 };
 
 type CartModalProps = {
-  cart: Cart;
   handleClose: () => void;
   show: boolean;
 };
@@ -27,7 +26,7 @@ type LoaderParams = {
 type Product = {
   description?: string;
   handle: string;
-  id: keyof Cart | number;
+  id: keyof Cart;
   img: string;
   name: string;
   price: number;
