@@ -13,7 +13,7 @@ function ProductBox(props: Product): JSX.Element {
   const setShowCart: Function = useOutletContext();
 
   return (
-    <Col md={3}>
+    <Col className="mb-5" md={3}>
       <Link
         className="text-decoration-none text-dark"
         to={`/product/${props.handle}`}
