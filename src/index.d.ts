@@ -31,3 +31,5 @@ type Product = {
   name: string;
   price: number;
 };
+
+type showCart = boolean;

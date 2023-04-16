@@ -35,7 +35,7 @@ function CartModal(props: CartModalProps): JSX.Element {
   return (
     <Modal show={props.show} onHide={props.handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Title>Shopping Cart</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <>
@@ -58,10 +58,11 @@ function CartModal(props: CartModalProps): JSX.Element {
                     </div>
                     <div className="col-md-7">
                       <Link
+                        className="text-decoration-none text-dark"
                         to={`/product/${product.handle}`}
                         onClick={props.handleClose}
                       >
-                        <span className="d-block">{product.name}</span>
+                        <span className="d-block fw-bold">{product.name}</span>
                       </Link>
                       <span className="d-block">${product.price}</span>
                     </div>
