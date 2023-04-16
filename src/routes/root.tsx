@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, useRouteLoaderData } from "react-router-dom";
+import { Outlet, useRouteLoaderData, Link } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
@@ -25,7 +25,9 @@ function Root(): JSX.Element {
     <>
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">MP-1000</Navbar.Brand>
+          <Link to="/">
+            <Navbar.Brand>MP-1000</Navbar.Brand>
+          </Link>
           <Button variant="primary" onClick={handleShow}>
             Cart
           </Button>
