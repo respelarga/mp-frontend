@@ -1,70 +1,219 @@
-# Getting Started with Create React App
+# MP 1000: mp-frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is an React app written in Typescript with Apollo GraphQL Client, It's default host and port is at http://localhost:3001
 
-## Available Scripts
+\*\* This works with this api server: https://github.com/respelarga/mp-graph-api.git
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+Clone the project by using git
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+  git clone https://github.com/respelarga/mp-frontend.git
+  cd mp-graph-api
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Ensure Docker is running then run the following command
 
-### `npm test`
+On Mac:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+  $ ./setup.sh
+```
 
-### `npm run build`
+On Windows: Coming Soon!
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## API Reference
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Endpoint
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+  POST /graphql
+```
 
-### `npm run eject`
+#### Get all products
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+  query GetProducts {
+    products {
+      id
+      name
+      price
+      handle
+      img
+      description
+    }
+  }
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Variables     | Type     |
+| :------------ | :------- |
+| `id`          | `ID`     |
+| `name`        | `string` |
+| `price`       | `Float`  |
+| `handle`      | `string` |
+| `description` | `string` |
+| `img`         | `string` |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Get one product
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+  POST /graphql
+```
 
-## Learn More
+```bash
+  query Product($handle: String!) {
+    product(handle: $handle) {
+      id
+      name
+      price
+      handle
+      img
+      description
+    }
+  }
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+| Variables     | Type      |
+| :------------ | :-------- |
+| `id`          | `ID!`     |
+| `name`        | `string!` |
+| `price`       | `Float!`  |
+| `handle`      | `string`  |
+| `description` | `string`  |
+| `img`         | `string`  |
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Get product by ID
 
-### Code Splitting
+```bash
+  POST /graphql
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+  query Product($id: ID!) {
+    productById(id: $id) {
+      id
+      name
+      price
+      handle
+      img
+      description
+    }
+  }
+```
 
-### Analyzing the Bundle Size
+| Variables     | Type      |
+| :------------ | :-------- |
+| `id`          | `ID!`     |
+| `name`        | `string!` |
+| `price`       | `Float!`  |
+| `handle`      | `string`  |
+| `description` | `string`  |
+| `img`         | `string`  |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### Get cart
 
-### Making a Progressive Web App
+```bash
+  POST /graphql
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+  query {
+    cart {
+      products
+    }
+  }
+```
 
-### Advanced Configuration
+| Variables | Type          |
+| :-------- | :------------ |
+| `product` | `JSON object` |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+\*\* NOTE: Uses session.id to track users cart
 
-### Deployment
+#### Get Discounts
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+  query {
+    discount {
+      percentage
+      minimum
+    }
+  }
+```
 
-### `npm run build` fails to minify
+| Variables    | Type  |
+| :----------- | :---- |
+| `percentage` | `Int` |
+| `minimum`    | `Int` |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### Is logged user in?
+
+```bash
+  query {
+    isLoggedIn
+  }
+```
+
+| Variables    | Type      |
+| :----------- | :-------- |
+| `isLoggedIn` | `Boolean` |
+
+\*\* NOTE: Uses session.id to check if logged in
+
+#### Add/Remove product to cart
+
+```bash
+  mutation AddToCart($products: String!) {
+    addToCart(products: $products) {
+      products
+    }
+  }
+```
+
+| Variables  | Type                          |
+| :--------- | :---------------------------- |
+| `products` | `JSON Object within an Array` |
+
+\*\* NOTE: Uses session.id to check if logged in
+
+#### Add all product
+
+```bash
+  mutation AddProduct(
+    $uuid: Int!
+    $name: String!
+    $price: Float!
+    $handle: String!
+    $img: String
+    $description: String
+  ) {
+    addProduct(
+      uuid: $uuid
+      name: $name
+      price: $price
+      handle: $handle
+      img: $img
+      description: $description
+    ) {
+      name
+      img
+    }
+  }
+```
+
+| Variables     | Type     |
+| :------------ | :------- |
+| `uuid`        | `Int`    |
+| `id`          | `ID`     |
+| `name`        | `string` |
+| `price`       | `Float`  |
+| `handle`      | `string` |
+| `description` | `string` |
+| `img`         | `string` |
+
+## Tech Stack
+
+**Frontend:** Node React-app, Apollo Client Graphql
+
+**Login:** Uses server side login from API endpoint
