@@ -4,6 +4,13 @@ This is an React app written in Typescript with Apollo GraphQL Client, It's defa
 
 \*\* This works with this api server: https://github.com/respelarga/mp-graph-api.git
 
+\*\* Default login
+
+```bash
+  adminadmin12
+  admin
+```
+
 ## Installation
 
 Clone the project by using git

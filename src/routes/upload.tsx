@@ -1,4 +1,4 @@
-import { useEffect, useState, ChangeEvent, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 
@@ -105,6 +105,7 @@ function UploadProduct(): JSX.Element {
                       variables: uploadProductVariables,
                     }).then(() => {
                       setUploading(false);
+                      navigate("/");
                     });
                   } else {
                     await uploadProduct({ variables: uploadProductVariables });
